@@ -1,0 +1,10 @@
+<distributionManagement>
+  <repository>
+    <id>releases-mvn-repo</id>
+    <url>https://github.com/camsys/mvn-repo/raw/master/releases</url>
+    </repository>
+  <snapshotRepository>
+    <id>snapshots-mvn-repo</id>
+    <url>https://github.com/camsys/mvn-repo/raw/master/snapshots</url>
+    </snapshotRepository>
+</distributionManagement>
