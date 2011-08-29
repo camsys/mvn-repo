@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.onebusaway</groupId>
+  <artifactId>onebusaway-federations-webapp</artifactId>
+  <versioning>
+    <versions>
+      <version>2.0.1-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20110826185002</lastUpdated>
+  </versioning>
+</metadata>
