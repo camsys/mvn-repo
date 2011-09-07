@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.zeromq</groupId>
+  <artifactId>jzmq</artifactId>
+  <version>053c2d7</version>
+  <versioning>
+    <versions>
+      <version>053c2d7</version>
+    </versions>
+    <lastUpdated>20110907190406</lastUpdated>
+  </versioning>
+</metadata>
