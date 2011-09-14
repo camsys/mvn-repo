@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.onebusaway</groupId>
+  <artifactId>onebusaway-nyc-tcip-api-v305</artifactId>
+  <versioning>
+    <versions>
+      <version>2.0.1-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20110914141203</lastUpdated>
+  </versioning>
+</metadata>
