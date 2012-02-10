@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>org.onebusaway</groupId>
+  <artifactId>onebusaway-transit-data</artifactId>
+  <version>2.0.17-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <timestamp>20120209.235742</timestamp>
+      <buildNumber>2</buildNumber>
+    </snapshot>
+    <lastUpdated>20120209235742</lastUpdated>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>jar</extension>
+        <value>2.0.17-20120209.235742-2</value>
+        <updated>20120209235742</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>2.0.17-20120209.235742-2</value>
+        <updated>20120209235742</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+</metadata>
