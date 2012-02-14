@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>org.onebusaway</groupId>
+  <artifactId>onebusaway-realtime-api</artifactId>
+  <version>2.0.18-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <timestamp>20120214.230306</timestamp>
+      <buildNumber>1</buildNumber>
+    </snapshot>
+    <lastUpdated>20120214230306</lastUpdated>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>jar</extension>
+        <value>2.0.18-20120214.230306-1</value>
+        <updated>20120214230306</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>2.0.18-20120214.230306-1</value>
+        <updated>20120214230306</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+</metadata>

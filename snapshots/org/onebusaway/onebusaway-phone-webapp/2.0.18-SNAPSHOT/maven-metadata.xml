@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>org.onebusaway</groupId>
+  <artifactId>onebusaway-phone-webapp</artifactId>
+  <version>2.0.18-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <timestamp>20120214.230234</timestamp>
+      <buildNumber>1</buildNumber>
+    </snapshot>
+    <lastUpdated>20120214230234</lastUpdated>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>war</extension>
+        <value>2.0.18-20120214.230234-1</value>
+        <updated>20120214230234</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>2.0.18-20120214.230234-1</value>
+        <updated>20120214230234</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+</metadata>
