@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>org.onebusaway</groupId>
+  <artifactId>onebusaway-transit-data-federation-builder</artifactId>
+  <version>2.0.20-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <timestamp>20120309.214908</timestamp>
+      <buildNumber>1</buildNumber>
+    </snapshot>
+    <lastUpdated>20120309214908</lastUpdated>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>jar</extension>
+        <value>2.0.20-20120309.214908-1</value>
+        <updated>20120309214908</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>2.0.20-20120309.214908-1</value>
+        <updated>20120309214908</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <classifier>withAllDependencies</classifier>
+        <extension>jar</extension>
+        <value>2.0.20-20120309.214908-1</value>
+        <updated>20120309214908</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <classifier>dependencies</classifier>
+        <extension>zip</extension>
+        <value>2.0.20-20120309.214908-1</value>
+        <updated>20120309214908</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+</metadata>
