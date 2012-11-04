@@ -1,0 +1,319 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>onebusaway-nyc</artifactId>
+        <groupId>org.onebusaway</groupId>
+        <version>2.0.9-SNAPSHOT</version>
+    </parent>
+    <groupId>org.onebusaway</groupId>
+    <artifactId>onebusaway-nyc-vehicle-tracking-webapp</artifactId>
+    <packaging>war</packaging>
+    <name>onebusaway-nyc-vehicle-tracking-webapp</name>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.onebusaway</groupId>
+            <artifactId>onebusaway-nyc-vehicle-tracking</artifactId>
+            <version>2.0.9-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.servlet.jsp</groupId>
+                    <artifactId>jsp-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.mortbay.jetty</groupId>
+                    <artifactId>servlet-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.onebusaway</groupId>
+            <artifactId>onebusaway-nyc-tdm-adapters</artifactId>
+            <version>2.0.9-SNAPSHOT</version>
+        </dependency>
+        <!-- Standard Java Webapp Libraries -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.4</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jsp-api</artifactId>
+            <version>2.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>taglibs</groupId>
+            <artifactId>standard</artifactId>
+            <version>1.1.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.thoughtworks.xstream</groupId>
+            <artifactId>xstream</artifactId>
+            <version>1.3.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>1.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>apache-log4j-extras</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.9.2</version>
+        </dependency>
+        <dependency>
+          <groupId>mysql</groupId>
+          <artifactId>mysql-connector-java</artifactId>
+          <version>5.1.18</version>
+        </dependency>
+    </dependencies>
+
+    <!-- TODO These are duplicated in several pom.xml files. Need to refactor out. -->
+    <profiles>
+        <profile>
+            <id>cloud</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+	    <!-- db is only for bundle, don't use RDS -->
+            <properties>
+                <db.driverClassName>org.hsqldb.jdbcDriver</db.driverClassName>
+                <db.url>jdbc:hsqldb:file:${bundle.location}/org_onebusaway_database</db.url>
+                <db.username>sa</db.username>
+                <db.password />
+<!--
+                <db.hibernate.dialect>org.hibernate.dialect.HSQLDialect</db.hibernate.dialect>
+-->
+                <ie.listener>PartitionedInputQueueListenerTask</ie.listener>
+                <ie.output.queue>OutputQueueSenderServiceImpl</ie.output.queue>
+                <tdm.host>tdm</tdm.host><!-- assumes domain is set in resolv.conf -->
+                <service.alerts.url>http://tdm/siri/situation-exchange</service.alerts.url>
+                <service.alerts.subscription.path>:8080/onebusaway-nyc-transit-data-federation-webapp/siri/situation-exchange</service.alerts.subscription.path>
+                <bundle.location>/mnt/obanyc/oba-bundle</bundle.location>
+                <siri.service.config>nyc-siri-service.xml</siri.service.config>
+                <bundle.mode.standalone>false</bundle.mode.standalone>
+                <depot.partition.key />
+                <log4j.appender>ROLL</log4j.appender>
+                <particle.filter.debug>false</particle.filter.debug>
+            </properties>
+        </profile>
+        <profile>
+          <!-- don't run both the vtw and the tdf in the same instance -->
+          <id>local-single-port</id>
+          <properties>
+                <db.driverClassName>org.hsqldb.jdbcDriver</db.driverClassName>
+                <db.url>jdbc:hsqldb:file:${bundle.location}/org_onebusaway_database</db.url>
+                <db.username>sa</db.username>
+                <db.password />
+<!--
+                <db.hibernate.dialect>org.hibernate.dialect.HSQLDialect</db.hibernate.dialect>
+-->
+                <ie.listener>PartitionedInputQueueListenerTask</ie.listener>
+                <ie.output.queue>DummyOutputQueueSenderServiceImpl</ie.output.queue>
+                <tdm.host>tdm.dev.obanyc.com</tdm.host>
+                <service.alerts.url>http://localhost:8080/siri/situation-exchange</service.alerts.url>
+                <service.alerts.subscription.path>:8080/onebusaway-nyc-vehicle-tracking-webapp/siri/situation-exchange</service.alerts.subscription.path>
+                <!-- Set this to nyc-siri-service.xml if you do want the NycSiriService to run -->
+<!--                 <siri.service.config>nyc-siri-service.xml</siri.service.config> -->
+                 <siri.service.config>empty.xml</siri.service.config>
+                 <bundle.location>/tmp/oba-bundle</bundle.location>
+                 <bundle.mode.standalone>false</bundle.mode.standalone>
+                 <depot.partition.key />
+                 <log4j.appender>stdout</log4j.appender>
+                 <particle.filter.debug>false</particle.filter.debug>
+          </properties>
+        </profile>
+        <profile>
+          <id>local-ie</id>
+          <properties>
+                <db.driverClassName>org.hsqldb.jdbcDriver</db.driverClassName>
+                <db.url>jdbc:hsqldb:file:${bundle.location}/org_onebusaway_database</db.url>
+                <db.username>sa</db.username>
+                <db.password />
+<!--
+                <db.hibernate.dialect>org.hibernate.dialect.HSQLDialect</db.hibernate.dialect>
+-->
+                <ie.listener>PartitionedInputQueueListenerTask</ie.listener>
+                <ie.output.queue>DummyOutputQueueSenderServiceImpl</ie.output.queue>
+                <tdm.host>tdm.dev.obanyc.com</tdm.host>
+                <service.alerts.url>http://localhost:8080/siri/situation-exchange</service.alerts.url>
+                <service.alerts.subscription.path>:8080/onebusaway-nyc-vehicle-tracking-webapp/siri/situation-exchange</service.alerts.subscription.path>
+                <!-- Set this to nyc-siri-service.xml if you do want the NycSiriService to run -->
+<!--                 <siri.service.config>nyc-siri-service.xml</siri.service.config> -->
+                 <siri.service.config>empty.xml</siri.service.config>
+                 <bundle.location>/tmp/oba-bundle</bundle.location>
+                 <bundle.mode.standalone>false</bundle.mode.standalone>
+                 <depot.partition.key />
+                 <log4j.appender>stdout</log4j.appender>
+                 <particle.filter.debug>false</particle.filter.debug>
+          </properties>
+        </profile>
+        <profile>
+          <id>local-ie-testing</id>
+          <properties>
+                <db.driverClassName>org.hsqldb.jdbcDriver</db.driverClassName>
+                <db.url>jdbc:hsqldb:file:${bundle.location}/org_onebusaway_database</db.url>
+                <db.username>sa</db.username>
+                <db.password />
+                <db.hibernate.dialect>org.hibernate.dialect.HSQLDialect</db.hibernate.dialect>
+                <ie.listener>PartitionedInputQueueListenerTask</ie.listener>
+                <ie.output.queue>DummyOutputQueueSenderServiceImpl</ie.output.queue>
+<!--                 <tdm.host>tdm.dev.obanyc.com</tdm.host> -->
+                <tdm.host />
+                <tdm.port>80</tdm.port>
+                <tdm.url>/api/</tdm.url>
+                
+                <service.alerts.url>http://localhost:8080/siri/situation-exchange</service.alerts.url>
+                <service.alerts.subscription.path>:8080/onebusaway-nyc-vehicle-tracking-webapp/siri/situation-exchange</service.alerts.subscription.path>
+                <!-- Set this to nyc-siri-service.xml if you do want the NycSiriService to run -->
+<!--                 <siri.service.config>nyc-siri-service.xml</siri.service.config> -->
+                 <siri.service.config>empty.xml</siri.service.config>
+                 <bundle.location>/var/lib/obanyc/oba-bundle</bundle.location>
+                 <bundle.mode.standalone>true</bundle.mode.standalone>
+<!--                  <bundle.mode.standalone>false</bundle.mode.standalone> -->
+                 <depot.partition.key />
+                 <log4j.appender>stdout</log4j.appender>
+<!--                  <particle.filter.debug>false</particle.filter.debug> -->
+                 <particle.filter.debug>true</particle.filter.debug>
+          </properties>
+        </profile>
+        <profile>
+          <id>local-multi-port</id>
+          <properties>
+                <db.driverClassName>org.hsqldb.jdbcDriver</db.driverClassName>
+                <db.url>jdbc:hsqldb:file:${bundle.location}/org_onebusaway_database</db.url>
+                <db.username>sa</db.username>
+                <db.password />
+<!--
+                <db.hibernate.dialect>org.hibernate.dialect.HSQLDialect</db.hibernate.dialect>
+-->
+                <ie.listener>PartitionedInputQueueListenerTask</ie.listener>
+                <ie.output.queue>DummyOutputQueueSenderServiceImpl</ie.output.queue>
+                <tdm.host>tdm.dev.obanyc.com</tdm.host>
+                <service.alerts.url>http://localhost:8083/siri/situation-exchange</service.alerts.url>
+                <service.alerts.subscription.path>:8081/onebusaway-nyc-vehicle-tracking-webapp/siri/situation-exchange</service.alerts.subscription.path>
+                <!-- Set this to nyc-siri-service.xml if you do want the NycSiriService to run -->
+<!--                 <siri.service.config>nyc-siri-service.xml</siri.service.config> -->
+                 <siri.service.config>empty.xml</siri.service.config>
+                 <bundle.location>/tmp/oba-bundle</bundle.location>
+                 <bundle.mode.standalone>false</bundle.mode.standalone>
+                 <depot.partition.key>YU</depot.partition.key>
+                 <log4j.appender>stdout</log4j.appender>
+                 <particle.filter.debug>false</particle.filter.debug>
+          </properties>
+        </profile>
+
+        <!--  depot partition keys -->
+        <!--  mainly useful for limiting data for development environments -->
+        <profile>
+            <id>depots-all</id>
+            <properties>
+                <depot.partition.key>JG,CA,MA,MH,YU,100th,126,BPK,CAST,CHAR,CP,ECH,ENY,FLAT,FP,FRK,GH,GRAND,JAM,JFK,KB,LAG,MANVI,MJQ,NJL,QV,RVC,SPRCK,STF,ULPK,WF,YNK,YUK</depot.partition.key>
+            </properties>            
+        </profile>
+        <profile>
+            <id>depots-one</id>
+            <properties>
+                <depot.partition.key>YUK</depot.partition.key>
+            </properties>            
+        </profile>
+        <profile>
+            <id>depots-small</id>
+            <properties>
+                <depot.partition.key>CA</depot.partition.key><!-- B63 -->
+            </properties>            
+        </profile>
+        <profile>
+            <id>depots-none</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <depot.partition.key />
+            </properties>            
+        </profile>
+    </profiles>
+
+    <build>
+        <finalName>onebusaway-nyc-vehicle-tracking-webapp</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>maven-jetty-plugin</artifactId>
+                <version>${jetty.version}</version>
+                <!-- TODO This configuration needs to be under a profile for local operation -->
+                <configuration>
+                    <!-- TODO Only for OSX? -->
+<!--                     <systemProperties>
+                        <systemProperty>
+                            <name>java.library.path</name>
+                            <value>/usr/local/lib</value>
+                        </systemProperty>
+                    </systemProperties>
+ -->                    <connectors>
+                        <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+                            <port>8081</port>
+                        </connector>
+                    </connectors>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <configuration>
+                    <mainClass>org.hsqldb.Server</mainClass>
+                     <arguments>
+                        <argument>-database.0</argument>
+                        <argument>file:onebusaway_nyc</argument>
+                        <argument>-dbname.0</argument>
+                        <argument>onebusaway_nyc</argument>
+                    </arguments>
+                </configuration>
+            </plugin>
+        </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
+</project>
