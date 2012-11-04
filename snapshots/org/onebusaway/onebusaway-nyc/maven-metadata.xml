@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.onebusaway</groupId>
+  <artifactId>onebusaway-nyc</artifactId>
+  <versioning>
+    <versions>
+      <version>2.0.7-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20121104000741</lastUpdated>
+  </versioning>
+</metadata>
