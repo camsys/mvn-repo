@@ -1,0 +1,161 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.onebusaway</groupId>
+        <artifactId>onebusaway-nyc</artifactId>
+        <version>2.0.8-SNAPSHOT</version>
+    </parent>
+    <groupId>org.onebusaway</groupId>
+    <artifactId>onebusaway-nyc-transit-data-federation-webapp</artifactId>
+    <packaging>war</packaging>
+
+    <name>onebusaway-nyc-transit-data-federation-webapp</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.onebusaway</groupId>
+            <artifactId>onebusaway-nyc-transit-data-federation</artifactId>
+            <version>2.0.8-SNAPSHOT</version>
+        </dependency>
+
+        <!-- RMI-like service for wiring up services between VMs -->
+        <dependency>
+            <groupId>com.caucho</groupId>
+            <artifactId>resin-hessian</artifactId>
+	        <version>3.1.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>apache-log4j-extras</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jsp-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>taglibs</groupId>
+            <artifactId>standard</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+	<!-- for amazon deployment -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.17</version>
+        </dependency>
+        <dependency>
+          <groupId>org.onebusaway</groupId>
+          <artifactId>onebusaway-nyc-tdm-adapters</artifactId>
+          <version>2.0.8-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+    <profiles>
+        <!--  bundle location profiles -->
+        <profile>
+            <id>cloud</id>
+            <properties>
+                <bundle.location>/mnt/obanyc/oba-bundle</bundle.location>
+                <bundle.mode.standalone>false</bundle.mode.standalone>
+                <tdm.host>tdm</tdm.host><!-- assumes domain is set in resolv.conf -->
+                <service.alerts.url>http://tdm/siri/situation-exchange</service.alerts.url>
+                <service.alerts.subscription.path>:8080/onebusaway-nyc-transit-data-federation-webapp/siri/situation-exchange</service.alerts.subscription.path>
+                <log4j.appender>ROLL</log4j.appender>
+            </properties>
+        </profile>
+        <profile>
+            <id>local-front-end</id>
+            <properties>
+                <tdm.host>tdm.dev.obanyc.com</tdm.host>
+                <bundle.location>/tmp/oba-bundle</bundle.location>
+                <bundle.mode.standalone>false</bundle.mode.standalone>
+                <log4j.appender>stdout</log4j.appender>
+            </properties>
+        </profile>
+        <profile>
+            <!-- don't run both the vtw and the tdf in the same instance -->
+            <id>local-single-port</id>
+            <properties>
+                <tdm.host>tdm.dev.obanyc.com</tdm.host>
+                <bundle.location>/tmp/oba-bundle</bundle.location>
+                <bundle.mode.standalone>false</bundle.mode.standalone>
+<!--
+                <service.alerts.url>http://localhost:8080/siri/situation-exchange</service.alerts.url>
+                <service.alerts.subscription.path>:8080/onebusaway-nyc-vehicle-tracking-webapp/siri/situation-exchange</service.alerts.subscription.path>
+-->
+                <service.alerts.url>http://tdm.dev.obanyc.com/siri/situation-exchange</service.alerts.url>
+                <service.alerts.subscription.path>/onebusaway-nyc-vehicle-tracking-webapp/siri/situation-exchange</service.alerts.subscription.path>
+                <log4j.appender>stdout</log4j.appender>
+            </properties>
+        </profile>
+        <profile>
+            <id>local-ie-testing</id>
+            <properties>
+                <tdm.host />
+<!--                 <tdm.host>tdm.dev.obanyc.com</tdm.host> -->
+                <bundle.location>/var/lib/obanyc/oba-bundle</bundle.location>
+                <bundle.mode.standalone>true</bundle.mode.standalone>
+                <service.alerts.url />
+                <service.alerts.subscription.path />
+                <log4j.appender>stdout</log4j.appender>
+            </properties>
+        </profile>
+        <profile>
+            <id>local-ie</id>
+            <properties>
+                <tdm.host>tdm.dev.obanyc.com</tdm.host>
+                <bundle.location>/tmp/oba-bundle</bundle.location>
+                <bundle.mode.standalone>true</bundle.mode.standalone>
+                <log4j.appender>stdout</log4j.appender>
+            </properties>
+        </profile>
+        <profile>
+            <id>local-multi-port</id>
+            <properties>
+                <tdm.host>tdm.dev.obanyc.com</tdm.host>
+                <bundle.location>/tmp/oba-bundle</bundle.location>
+                <bundle.mode.standalone>true</bundle.mode.standalone>
+                <service.alerts.url>http://localhost:8083/siri/situation-exchange</service.alerts.url>
+                <service.alerts.subscription.path>:8081/onebusaway-nyc-vehicle-tracking-webapp/siri/situation-exchange</service.alerts.subscription.path>
+                <log4j.appender>stdout</log4j.appender>
+            </properties>
+        </profile>
+    </profiles>
+
+    <build>
+        <finalName>onebusaway-nyc-transit-data-federation-webapp</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
+
+</project>
